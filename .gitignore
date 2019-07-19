@@ -1,0 +1,5 @@
+/iso/*.iso
+/box/*.box
+/.vagrant
+/packer_cache
+/output-virtualbox-iso
