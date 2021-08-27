@@ -23,6 +23,5 @@ APT::Periodic::AutocleanInterval "0";
 APT::Periodic::Unattended-Upgrade "0";
 EOF
 
-apt-get update
-
-DEBIAN_FRONTEND=noninteractive apt-get --yes install linux-headers-`uname -r` gcc make perl
+DEBIAN_FRONTEND=noninteractive apt-get update
+DEBIAN_FRONTEND=noninteractive apt-get --yes upgrade

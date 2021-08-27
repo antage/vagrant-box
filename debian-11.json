@@ -1,0 +1,73 @@
+{
+  "builders": [
+    {
+      "boot_command": [
+        "<esc><wait>",
+        "install ",
+        "preseed/url=http://{{.HTTPIP}}:{{.HTTPPort}}/bullseye-preseed.cfg ",
+        "debian-installer=en_US.UTF-8 ",
+        "auto ",
+        "locale=en_US.UTF-8 ",
+        "kbd-chooser/method=us ",
+        "keyboard-configuration/xkb-keymap=us ",
+        "console-setup/ask_detect=false ",
+        "console-keymaps-at/keymap=us ",
+        "netcfg/get_hostname={{.Name}} ",
+        "netcfg/get_domain= ",
+        "net.ifnames=0 ",
+        "fb=false ",
+        "debconf/frontend=noninteractive ",
+        "<enter><wait>"
+      ],
+      "boot_wait": "5s",
+      "cpus": 1,
+      "cores": 2,
+      "memory": "4096",
+      "disk_size": 8192,
+      "guest_os_type": "debian10-64",
+      "headless": true,
+      "http_directory": "http",
+      "iso_checksum": "sha256:ae6d563d2444665316901fe7091059ac34b8f67ba30f9159f7cef7d2fdc5bf8a",
+      "iso_urls": [
+        "iso/debian-11.0.0-amd64-netinst.iso",
+        "https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-11.0.0-amd64-netinst.iso"
+      ],
+      "shutdown_timeout": "10s",
+      "shutdown_command": "echo 'vagrant' | sudo -S shutdown -P now",
+      "ssh_password": "vagrant",
+      "ssh_port": 22,
+      "ssh_timeout": "10000s",
+      "ssh_username": "vagrant",
+      "type": "vmware-iso",
+      "vmx_data_post": {
+        "memsize": "512",
+	"numvcpus": "1",
+	"cpuid.coresPerSocket": "1"
+      },
+      "vm_name": "debian-11"
+    }
+  ],
+  "post-processors": [
+    [
+      {
+        "output": "box/debian-11.box",
+        "type": "vagrant"
+      }
+    ]
+  ],
+  "provisioners": [
+    {
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E bash '{{.Path}}'",
+      "scripts": [
+        "scripts/sudoers.sh",
+        "scripts/apt.sh",
+        "scripts/network.sh",
+        "scripts/vagrant.sh",
+        "scripts/cleanup.sh",
+        "scripts/minimize.sh"
+      ],
+      "type": "shell"
+    }
+  ]
+}
+
